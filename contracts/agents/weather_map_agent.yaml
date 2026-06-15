@@ -1,0 +1,22 @@
+agent:
+  name: weather-map-agent
+  python_package: weather_map_agent
+  version: 0.1.0
+  description: Generate forecast weather maps as HTML URL artifacts.
+  runtime_url_env: RESOURCE_RUNTIME_URL
+  runtime_url_default: http://localhost:8000
+capabilities:
+- name: read_weather_map
+  type: resource_read
+  description: Read generated weather map HTML view for a location and forecast horizon.
+  uri: resource://weather/maps/{place}/forecast/{days}
+  output_schema: app.weather.v1.WeatherMapHtmlView
+  renderer: html
+- name: generate_weather_map
+  type: command
+  description: Generate a weather map forecast HTML view for a location.
+  command: GenerateWeatherMap
+  input_schema: app.weather.v1.GenerateWeatherMapCommand
+  emits:
+  - WeatherMapGenerationRequested
+  - WeatherMapGenerated

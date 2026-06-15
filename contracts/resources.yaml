@@ -1,0 +1,15 @@
+resources:
+- uri: resource://weather/maps/{place}/forecast/{days}
+  projection: weather_map_html_map_view
+  schema: app.weather.v1.WeatherMapHtmlView
+  renderer: html
+  owner_agent: weather-map-agent
+  stability: experimental
+  version: v1
+- uri: resource://weather/forecast/{place}/{days}
+  projection: weather_map_forecast_data_view
+  schema: app.weather.v1.ForecastDataView
+  renderer: json
+  owner_agent: weather-map-agent
+  stability: experimental
+  version: v1

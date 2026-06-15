@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package app.weather.v1;
+
+message GenerateWeatherMapCommand {
+  string place = 1;
+  int32 days = 2;
+  string forecast_model = 3;
+  string output_mime_type = 4;
+  bool publish_as_url = 5;
+}
+
+message WeatherMapGenerationRequested {
+  string place = 1;
+  int32 days = 2;
+  string forecast_model = 3;
+  int64 requested_at = 4;
+}
+
+message WeatherMapGenerated {
+  string place = 1;
+  int32 days = 2;
+  string html_url = 3;
+  string html_content_hash = 4;
+  int64 generated_at = 5;
+}
+
+message ForecastDataView {
+  string place = 1;
+  int32 days = 2;
+  string model = 3;
+  string forecast_json = 4;
+}
+
+message WeatherMapHtmlView {
+  string place = 1;
+  int32 days = 2;
+  string html_url = 3;
+  string mime_type = 4;
+  string generated_at = 5;
+}
