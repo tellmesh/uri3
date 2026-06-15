@@ -13,6 +13,7 @@ dependencies = [
     "jsonschema>=4.23",
     "pyyaml>=6.0",
     "typer>=0.26.7",
+    "uri2ops",
 ]
 
 [project.optional-dependencies]
@@ -28,6 +29,9 @@ include = ["uri3*"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
+
+[tool.uv.sources]
+uri2ops = { git = "https://github.com/tellmesh/uri2ops.git" }
 
 [tool.pfix]
 # Self-healing Python configuration

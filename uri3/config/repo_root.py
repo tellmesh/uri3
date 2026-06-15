@@ -24,7 +24,12 @@ def _walk_up(start: Path) -> Path | None:
 
 def find_repo_root(start: Path | None = None, *, strict: bool = True) -> Path:
     """Locate monorepo root by contract/schema or config markers."""
-    found = _walk_up(start or Path(__file__))
+    if start is None:
+        found = _walk_up(Path.cwd())
+        if found is not None:
+            return found
+        start = Path(__file__)
+    found = _walk_up(start)
     if found is not None:
         return found
     if strict:
@@ -36,6 +41,9 @@ def config_repo_root(root: Path | None = None) -> Path:
     """Repo root for config file lookups; falls back to cwd when markers are missing."""
     if root is not None:
         return Path(root)
+    found = _walk_up(Path.cwd())
+    if found is not None:
+        return found
     found = _walk_up(Path(__file__))
     return found if found is not None else Path.cwd()
 

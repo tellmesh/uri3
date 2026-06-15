@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ast
+import os
 from pathlib import Path
 from typing import Any
 
@@ -9,8 +10,15 @@ import yaml
 from uri3.config.repo_root import find_repo_root
 
 
+def _default_repo_root() -> Path:
+    cwd = Path.cwd()
+    if (cwd / "docs" / "PACKAGE_BOUNDARIES.yaml").is_file():
+        return cwd
+    return find_repo_root()
+
+
 def load_boundary_rules(path: Path | None = None, *, root: Path | None = None) -> dict[str, Any]:
-    repo_root = root or find_repo_root()
+    repo_root = root or _default_repo_root()
     rules_path = path or repo_root / "docs" / "PACKAGE_BOUNDARIES.yaml"
     data = yaml.safe_load(rules_path.read_text(encoding="utf-8")) or {}
     return data.get("packages") or {}
@@ -40,6 +48,41 @@ def _allowed(import_name: str, allowed_prefixes: list[str]) -> bool:
     )
 
 
+def _tellmesh_root(repo_root: Path) -> Path | None:
+    candidates = []
+    if raw := os.getenv("TELLMESH_ROOT"):
+        candidates.append(Path(raw))
+    candidates.append(repo_root.parent.parent / "tellmesh")
+    candidates.append(Path("/home/tom/github/tellmesh"))
+    for candidate in candidates:
+        if candidate.is_dir():
+            return candidate
+    return None
+
+
+def _resolve_package_root(repo_root: Path, package_name: str, root: str) -> Path:
+    package_root = repo_root / root
+    if package_root.is_dir():
+        return package_root
+
+    parts = Path(root).parts
+    if len(parts) >= 3 and parts[0] == "packages":
+        tellmesh_root = _tellmesh_root(repo_root)
+        if tellmesh_root is not None:
+            split_root = tellmesh_root / package_name / parts[-1]
+            if split_root.is_dir():
+                return split_root
+
+    return package_root
+
+
+def _display_path(path: Path, repo_root: Path) -> str:
+    try:
+        return path.relative_to(repo_root).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
 def _validate_package_spec(
     package_name: str,
     spec: Any,
@@ -49,9 +92,9 @@ def _validate_package_spec(
     if not isinstance(spec, dict):
         spec_type = type(spec).__name__
         return None, [f"{package_name}: invalid boundary spec (expected mapping, got {spec_type})"]
-    if spec.get("optional") and not (repo_root / spec["root"]).exists():
+    package_root = _resolve_package_root(repo_root, package_name, spec["root"])
+    if spec.get("optional") and not package_root.exists():
         return None, []
-    package_root = repo_root / spec["root"]
     if not package_root.is_dir():
         return None, [f"{package_name}: missing package root {spec['root']}"]
     return package_root, []
@@ -70,7 +113,7 @@ def _scan_python_file(
     skip_forbidden = any(rel_to_package.startswith(prefix) for prefix in allowed_path_prefixes)
     if skip_forbidden:
         return []
-    rel = path.relative_to(repo_root)
+    rel = _display_path(path, repo_root)
     violations: list[str] = []
     for import_name in sorted(_module_imports(path)):
         if _allowed(import_name, allowed_prefixes):
@@ -86,7 +129,7 @@ def scan_package_boundaries(
     *,
     root: Path | None = None,
 ) -> list[str]:
-    repo_root = root or find_repo_root()
+    repo_root = root or _default_repo_root()
     rules = rules or load_boundary_rules(root=repo_root)
     violations: list[str] = []
 

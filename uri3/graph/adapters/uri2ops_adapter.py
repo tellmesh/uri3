@@ -2,22 +2,21 @@ from __future__ import annotations
 
 import json
 import os
+from importlib import import_module
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
 from uri2ops.operation_registry.dispatcher import call_handler
 from uri2ops.operation_registry.uri_mapping import registry_operation, registry_scheme
-
-from uri3.config.repo_root import ensure_repo_root_on_syspath
-
-ensure_repo_root_on_syspath()
 from uri2ops.remote_registry.loader import resolve_operation_registry
 
-from agents.operators.browser_operator.adapters.browser_router import cleanup_browser_session
+from uri3.config.repo_root import ensure_repo_root_on_syspath
 from uri3.graph.artifacts import mock_screenshot_png, write_artifact
 from uri3.graph.execution_models import ExecutionContext
 from uri3.graph.models import GraphNode
+
+ensure_repo_root_on_syspath()
 
 OPERATOR_SCHEMES = frozenset({"browser", "dom", "screen", "input"})
 
@@ -61,6 +60,15 @@ def _sync_session_from_output(context: ExecutionContext, output: dict[str, Any])
         session["page_text"] = output["text"]
     if output.get("url"):
         session["last_url"] = output["url"]
+
+
+def _cleanup_browser_session(state: dict[str, Any]) -> None:
+    try:
+        module = import_module("agents.operators.browser_operator.adapters.browser_router")
+        cleanup_browser_session = module.cleanup_browser_session
+    except Exception:
+        return
+    cleanup_browser_session(state)
 
 
 def _execute_via_hypervisor(
@@ -176,7 +184,7 @@ class Uri2OpsAdapter:
 def cleanup_operator_adapters(context: ExecutionContext) -> None:
     uri2ops_state = context.adapter_state.get("uri2ops")
     if isinstance(uri2ops_state, dict):
-        cleanup_browser_session(uri2ops_state)
+        _cleanup_browser_session(uri2ops_state)
 
 
 def resolve_operator_adapter(context: ExecutionContext) -> str:
