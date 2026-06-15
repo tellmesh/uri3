@@ -863,14 +863,29 @@ wheels = [
 [[package]]
 name = "uri2ops"
 version = "0.5.11"
-source = { git = "https://github.com/tellmesh/uri2ops.git#adbe192f72110cd44962853f074af7a647235b30" }
+source = { editable = "../uri2ops" }
 dependencies = [
     { name = "fastapi" },
     { name = "httpx" },
     { name = "jsonschema" },
     { name = "pyyaml" },
     { name = "typer" },
+    { name = "uri3" },
 ]
+
+[package.metadata]
+requires-dist = [
+    { name = "fastapi", specifier = ">=0.115" },
+    { name = "httpx", specifier = ">=0.27" },
+    { name = "jsonschema", specifier = ">=4.23" },
+    { name = "playwright", marker = "extra == 'browser'", specifier = ">=1.40" },
+    { name = "pywinauto", marker = "extra == 'windows'", specifier = ">=0.6" },
+    { name = "pyyaml", specifier = ">=6.0" },
+    { name = "typer", specifier = ">=0.26.7" },
+    { name = "uri3", editable = "." },
+    { name = "uvicorn", marker = "extra == 'server'", specifier = ">=0.27" },
+]
+provides-extras = ["browser", "windows", "server"]
 
 [[package]]
 name = "uri3"
@@ -896,6 +911,6 @@ requires-dist = [
     { name = "playwright", marker = "extra == 'browser'", specifier = ">=1.40" },
     { name = "pyyaml", specifier = ">=6.0" },
     { name = "typer", specifier = ">=0.26.7" },
-    { name = "uri2ops", git = "https://github.com/tellmesh/uri2ops.git" },
+    { name = "uri2ops", editable = "../uri2ops" },
 ]
 provides-extras = ["browser"]

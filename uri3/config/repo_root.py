@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 _CONFIG_MARKERS = (
@@ -22,13 +23,41 @@ def _walk_up(start: Path) -> Path | None:
     return None
 
 
+def _split_checkout_root(start: Path) -> Path | None:
+    current = start.resolve()
+    if current.is_file():
+        current = current.parent
+    for base in (current, *current.parents):
+        for candidate in (base / "hypervisor", base / "wronai" / "hypervisor"):
+            if (candidate / "contracts").is_dir() and (candidate / "schemas").is_dir():
+                return candidate.resolve()
+    return None
+
+
+def _env_root() -> Path | None:
+    raw = os.getenv("HYPERVISOR_REPO_ROOT")
+    if not raw:
+        return None
+    path = Path(raw).expanduser().resolve()
+    return path if path.exists() else None
+
+
 def find_repo_root(start: Path | None = None, *, strict: bool = True) -> Path:
     """Locate monorepo root by contract/schema or config markers."""
     if start is None:
+        env_root = _env_root()
+        if env_root is not None:
+            return env_root
+        split_root = _split_checkout_root(Path.cwd())
+        if split_root is not None:
+            return split_root
         found = _walk_up(Path.cwd())
         if found is not None:
             return found
         start = Path(__file__)
+    split_root = _split_checkout_root(start)
+    if split_root is not None:
+        return split_root
     found = _walk_up(start)
     if found is not None:
         return found
@@ -41,6 +70,12 @@ def config_repo_root(root: Path | None = None) -> Path:
     """Repo root for config file lookups; falls back to cwd when markers are missing."""
     if root is not None:
         return Path(root)
+    env_root = _env_root()
+    if env_root is not None:
+        return env_root
+    split_root = _split_checkout_root(Path.cwd())
+    if split_root is not None:
+        return split_root
     found = _walk_up(Path.cwd())
     if found is not None:
         return found

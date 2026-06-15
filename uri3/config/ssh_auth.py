@@ -36,8 +36,15 @@ def _password_from_env_file(root: Path) -> str | None:
     try:
         from dotenv import dotenv_values
     except ImportError:
-        return None
-    values = dotenv_values(env_path)
+        values: dict[str, str] = {}
+        for line in env_path.read_text(encoding="utf-8").splitlines():
+            stripped = line.strip()
+            if not stripped or stripped.startswith("#") or "=" not in stripped:
+                continue
+            key, value = stripped.split("=", 1)
+            values[key.strip()] = value.strip().strip('"').strip("'")
+    else:
+        values = dotenv_values(env_path)
     for key in ("HYPERVISOR_SSH_PASSWORD", "SSHPASS", "SSH_DEPLOY_PASSWORD"):
         value = values.get(key)
         if value:

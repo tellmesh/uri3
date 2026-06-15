@@ -31,7 +31,7 @@ testpaths = ["tests"]
 pythonpath = ["."]
 
 [tool.uv.sources]
-uri2ops = { git = "https://github.com/tellmesh/uri2ops.git" }
+uri2ops = { path = "../uri2ops", editable = true }
 
 [tool.pfix]
 # Self-healing Python configuration

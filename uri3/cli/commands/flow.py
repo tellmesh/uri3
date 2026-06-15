@@ -6,8 +6,6 @@ from typing import Any
 
 import typer
 
-from uri2flow import expand_flow
-from uri2flow.expander import dump_yaml
 from uri3.graph import (
     build_execution_plan,
     dry_run_workflow,
@@ -17,6 +15,13 @@ from uri3.graph import (
 )
 
 
+def _flow_tools():
+    from uri2flow import expand_flow
+    from uri2flow.expander import dump_yaml
+
+    return expand_flow, dump_yaml
+
+
 def expand_flow_cmd(
     path: str,
     *,
@@ -24,6 +29,7 @@ def expand_flow_cmd(
     json_out: bool = False,
 ) -> None:
     """Expand compact *.uri.flow.yaml to workflow_graph via uri2flow."""
+    expand_flow, dump_yaml = _flow_tools()
     graph = expand_flow(path)
     rendered = json.dumps(graph, indent=2, ensure_ascii=False) if json_out else dump_yaml(graph)
     if out:
@@ -45,6 +51,7 @@ def run_flow_cmd(
     json_out: bool = False,
 ) -> None:
     """Expand compact flow then validate/plan/run workflow (delegates to uri2flow + uri3)."""
+    expand_flow, dump_yaml = _flow_tools()
     graph = expand_flow(path)
     if out:
         out_path = Path(out)

@@ -23,18 +23,6 @@ _PACKAGE_MODULES = (
     "urigen",
 )
 
-_SPLIT_PACKAGE_MODULES = {
-    "uri3",
-    "uri2ops",
-    "nl2uri",
-    "touri",
-    "uri2run",
-    "uri2verify",
-    "uri2flow",
-    "uri2pact",
-    "urigen",
-}
-
 _LEGACY_TOP_LEVEL = (
     "generator",
     "hypervisor",
@@ -70,14 +58,11 @@ def check_legacy_import_roots(root: Path) -> dict[str, Any]:
             continue
         path = Path(module_file).resolve().as_posix()
         is_local_workspace = "/packages/" in path
-        is_split_checkout = "/tellmesh/" in path
-        is_installed_split = f"{root.resolve().as_posix()}/.venv/" in path and (
-            "/site-packages/" in path
-        )
-        if name in _SPLIT_PACKAGE_MODULES and (is_split_checkout or is_installed_split):
+        is_tellmesh_checkout = "/tellmesh/" in path
+        is_installed = f"{root.resolve().as_posix()}/.venv/" in path and "/site-packages/" in path
+        if is_local_workspace or is_tellmesh_checkout or is_installed:
             continue
-        if not is_local_workspace:
-            mismatches.append({"module": name, "path": path, "error": "not under packages/"})
+        mismatches.append({"module": name, "path": path, "error": "not under packages/ or tellmesh/"})
     return check_result(
         "imports.package_roots",
         ok=not mismatches,

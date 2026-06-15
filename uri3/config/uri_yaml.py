@@ -57,7 +57,12 @@ def unwrap_uri_yaml_document(data: dict[str, Any]) -> dict[str, Any]:
 
 
 def load_uri_yaml(path: str | Path, *, unwrap_spec: bool = True) -> dict[str, Any]:
-    data = yaml.safe_load(Path(path).read_text(encoding="utf-8"))
+    resolved = Path(path)
+    if not resolved.is_absolute() and not resolved.exists():
+        from uri3.config.repo_root import config_repo_root
+
+        resolved = config_repo_root() / resolved
+    data = yaml.safe_load(resolved.read_text(encoding="utf-8"))
     if not isinstance(data, dict):
         raise ValueError(f"URI YAML must be a mapping: {path}")
     return unwrap_uri_yaml_document(data) if unwrap_spec else data
