@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uri3.io/schemas/apply_plan.schema.json",
+  "title": "ApplyPlan",
+  "type": "object",
+  "required": ["apiVersion", "kind", "metadata", "uri", "spec"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "apiVersion": { "const": "uri3.io/v1" },
+    "kind": { "const": "ApplyPlan" },
+    "metadata": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": { "type": "string" },
+        "created_by": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "uri": {
+      "type": "object",
+      "required": ["self", "ecosystem"],
+      "properties": {
+        "self": { "type": "string", "pattern": "^apply://" },
+        "ecosystem": { "type": "string", "pattern": "^ecosystem://" }
+      },
+      "additionalProperties": true
+    },
+    "spec": {
+      "type": "object",
+      "required": ["actions"],
+      "properties": {
+        "actions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "operation", "source", "target"],
+            "properties": {
+              "id": { "type": "string" },
+              "operation": { "type": "string" },
+              "source": { "type": "string" },
+              "target": { "type": "string" },
+              "requires_approval": { "type": "boolean" }
+            },
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "verification": { "type": "object" },
+    "additionalProperties": true
+  },
+  "additionalProperties": true
+}

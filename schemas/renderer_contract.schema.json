@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Renderer Contract",
+  "type": "object",
+  "required": [
+    "renderers"
+  ],
+  "properties": {
+    "renderers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "view_kind",
+          "allowed_mime_types"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "view_kind": {
+            "type": "string"
+          },
+          "allowed_mime_types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+agent:
+  name: codex-uri-smoke-agent
+  python_package: codex_uri_smoke_agent
+  version: 0.1.0
+  description: Smoke-test agent for file and physical-operation URI provenance.
+  runtime_url_env: RESOURCE_RUNTIME_URL
+  runtime_url_default: http://localhost:8000
+
+capabilities:
+  - name: read_markpact_source
+    type: resource_read
+    uri: file:///home/tom/github/wronai/hypervisor/agents/generated/codex_uri_smoke_agent/README.md
+    output_schema: app.codex.v1.MarkpactSourceView
+    renderer: text
+    description: Read the generated agent README through a file URI.
+
+  - name: read_device_status
+    type: resource_read
+    uri: device://device/sensor-1/status
+    output_schema: operator.device.v1.DeviceStatus
+    renderer: detail
+    description: Read mock device status through uri2ops.
+
+  - name: run_cron_monitor
+    type: command
+    command: RunCronMonitor
+    input_schema: app.codex.v1.RunCronMonitorCommand
+    emits:
+      - CronMonitorRequested
+    description: Command placeholder for cron monitor integration.

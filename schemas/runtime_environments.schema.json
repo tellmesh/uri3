@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uri3.io/schemas/runtime_environments.schema.json",
+  "title": "RuntimeEnvironmentRegistry",
+  "type": "object",
+  "required": ["apiVersion", "kind", "metadata", "environments", "operators"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "apiVersion": { "const": "uri3.io/v1" },
+    "kind": { "const": "RuntimeEnvironmentRegistry" },
+    "metadata": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "description": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "defaults": {
+      "type": "object",
+      "properties": {
+        "execution_environment": { "type": "string" },
+        "policy": { "type": "string" },
+        "adapter": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "environments": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["label"],
+        "properties": {
+          "label": { "type": "string" },
+          "aliases": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "isolation": { "type": "string" },
+          "description": { "type": "string" },
+          "host_requirements": { "type": "object" },
+          "env": { "type": "object" },
+          "permissions": { "type": "object" },
+          "policy": { "type": "object" },
+          "connects_to": { "type": "object" },
+          "notes": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "operators": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["agent_ref", "port", "launch", "endpoints"],
+        "properties": {
+          "agent_ref": { "type": "string", "pattern": "^agent://" },
+          "role": { "type": "string" },
+          "runtime_package": { "type": "string" },
+          "port": { "type": "integer", "minimum": 1, "maximum": 65535 },
+          "schemes": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "default_execution_environment": { "type": "string" },
+          "launch": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": { "type": "string" }
+          },
+          "endpoints": {
+            "type": "object",
+            "required": ["health"],
+            "properties": {
+              "health": { "type": "string", "format": "uri" },
+              "environments": { "type": "string", "format": "uri" },
+              "mcp_tools": { "type": "string", "format": "uri" },
+              "mcp_call": { "type": "string", "format": "uri" }
+            },
+            "additionalProperties": true
+          },
+          "host_env_forward": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "contracts": { "type": "object" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "control_plane": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["agent_ref", "port", "endpoints"],
+        "properties": {
+          "agent_ref": { "type": "string", "pattern": "^agent://" },
+          "port": { "type": "integer", "minimum": 1, "maximum": 65535 },
+          "role": {
+            "oneOf": [
+              { "type": "string" },
+              { "type": "array", "items": { "type": "string" } }
+            ]
+          },
+          "launch": { "type": "object" },
+          "endpoints": { "type": "object" },
+          "must_not_execute": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

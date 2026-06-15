@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uri3.io/schemas/repair_plan.schema.json",
+  "title": "RepairPlanArtifact",
+  "type": "object",
+  "required": ["$schema", "apiVersion", "kind", "metadata", "uri", "spec"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "apiVersion": { "const": "uri3.io/v1" },
+    "kind": { "const": "RepairPlan" },
+    "metadata": {
+      "type": "object",
+      "required": ["id", "source_incident"],
+      "properties": {
+        "id": { "type": "string" },
+        "source_incident": { "type": "string", "pattern": "^incident://" }
+      }
+    },
+    "uri": {
+      "type": "object",
+      "required": ["self"],
+      "properties": {
+        "self": { "type": "string", "pattern": "^repair://" }
+      }
+    },
+    "spec": {
+      "type": "object",
+      "required": ["playbook", "policy_level"],
+      "properties": {
+        "playbook": { "type": "string" },
+        "policy_level": { "type": "string" },
+        "steps": { "type": "array" },
+        "requires_approval": { "type": "boolean" }
+      }
+    }
+  }
+}

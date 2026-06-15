@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/resources.schema.json",
+  "title": "Resource Contracts",
+  "type": "object",
+  "required": [
+    "resources"
+  ],
+  "properties": {
+    "resources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "uri",
+          "projection",
+          "schema",
+          "renderer",
+          "version",
+          "stability"
+        ],
+        "properties": {
+          "uri": {
+            "type": "string",
+            "pattern": "^(resource|view|repair|health|runtime|readiness|incident)://[a-zA-Z0-9_\\-/{}/]+$"
+          },
+          "projection": {
+            "type": "string",
+            "minLength": 1
+          },
+          "renderer": {
+            "type": "string",
+            "minLength": 1
+          },
+          "version": {
+            "type": "string"
+          },
+          "stability": {
+            "enum": [
+              "experimental",
+              "beta",
+              "stable",
+              "deprecated"
+            ]
+          },
+          "schema": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}

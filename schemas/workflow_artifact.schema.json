@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uri3.io/schemas/workflow_artifact.schema.json",
+  "title": "WorkflowStepArtifact",
+  "type": "object",
+  "required": ["apiVersion", "kind", "metadata", "uri", "result"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "apiVersion": { "const": "uri3.io/v1" },
+    "kind": { "const": "WorkflowStepArtifact" },
+    "metadata": {
+      "type": "object",
+      "required": ["workflow_id", "step_id"],
+      "properties": {
+        "workflow_id": { "type": "string" },
+        "step_id": { "type": "string" },
+        "run_id": { "type": "string" },
+        "artifact_id": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "uri": {
+      "type": "object",
+      "required": ["self"],
+      "properties": {
+        "self": { "type": "string", "pattern": "^artifact://" },
+        "source_step": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "result": {
+      "type": "object",
+      "required": ["execution_status", "service_result_status"],
+      "properties": {
+        "ok": { "type": "boolean" },
+        "execution_status": { "type": "string" },
+        "service_result_status": { "type": "string" },
+        "workflow_status": { "type": "string" },
+        "result_type": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uri3.io/schemas/deployment_registry.schema.json",
+  "title": "DeploymentRegistry",
+  "type": "object",
+  "properties": {
+    "$schema": { "type": "string" },
+    "apiVersion": { "const": "uri3.io/v1" },
+    "kind": { "const": "DeploymentRegistry" },
+    "deployments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "agent_ref", "target_uri"],
+        "properties": {
+          "id": { "type": "string" },
+          "agent_ref": { "type": "string" },
+          "target_uri": { "type": "string" },
+          "declared": {
+            "type": "object",
+            "properties": {
+              "target_uri": { "type": "string" },
+              "preferred_port": { "type": ["integer", "null"] },
+              "health_uri": { "type": "string" },
+              "card_uri": { "type": "string" }
+            },
+            "additionalProperties": true
+          },
+          "runtime": {
+            "type": "object",
+            "properties": {
+              "effective_port": { "type": ["integer", "null"] },
+              "effective_health_uri": { "type": "string" },
+              "pid": { "type": ["integer", "null"] },
+              "lifecycle_status": { "type": "string" },
+              "health_status": { "type": "string" },
+              "deployment_status": { "type": "string" },
+              "service_result_status": { "type": "string" }
+            },
+            "additionalProperties": true
+          },
+          "status": { "type": "string" },
+          "health_uri": { "type": "string" },
+          "card_uri": { "type": "string" },
+          "env": { "type": "object" },
+          "metadata": { "type": "object" }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "required": ["deployments"],
+  "additionalProperties": true
+}

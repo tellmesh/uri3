@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uri3.io/schemas/artifact_base.schema.json",
+  "title": "Uri3ArtifactBase",
+  "type": "object",
+  "required": ["apiVersion", "kind"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "apiVersion": { "const": "uri3.io/v1" },
+    "kind": { "type": "string", "minLength": 1 },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "created_at": { "type": "string" },
+        "created_by": { "type": "string" },
+        "source": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "uri": {
+      "type": "object",
+      "properties": {
+        "self": { "type": "string", "pattern": "^[a-zA-Z][a-zA-Z0-9+.-]*://" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

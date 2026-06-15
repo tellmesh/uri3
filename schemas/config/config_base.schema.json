@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uri3.io/schemas/config/config_base.schema.json",
+  "title": "UriConfigBase",
+  "type": "object",
+  "required": ["apiVersion", "kind", "metadata", "uri", "spec"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "apiVersion": { "const": "uri3.io/v1" },
+    "kind": { "type": "string", "minLength": 1 },
+    "metadata": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "uri": {
+      "type": "object",
+      "required": ["self"],
+      "properties": {
+        "self": { "type": "string", "pattern": "^config://" }
+      },
+      "additionalProperties": true
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

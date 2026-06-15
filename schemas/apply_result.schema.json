@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uri3.io/schemas/apply_result.schema.json",
+  "title": "ApplyResult",
+  "type": "object",
+  "required": ["apiVersion", "kind", "uri", "status", "actions"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "apiVersion": { "const": "uri3.io/v1" },
+    "kind": { "const": "ApplyResult" },
+    "uri": {
+      "type": "object",
+      "required": ["self", "ecosystem"],
+      "properties": {
+        "self": { "type": "string", "pattern": "^apply://" },
+        "ecosystem": { "type": "string" },
+        "plan": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "status": {
+      "type": "object",
+      "required": ["ok", "execution_status", "service_result_status"],
+      "properties": {
+        "ok": { "type": "boolean" },
+        "execution_status": { "type": "string" },
+        "service_result_status": { "type": "string" },
+        "apply_status": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "status"],
+        "properties": {
+          "id": { "type": "string" },
+          "status": { "type": "string" },
+          "detail": {
+            "oneOf": [{ "type": "string" }, { "type": "object" }]
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "rollback": { "type": "object" },
+    "additionalProperties": true
+  },
+  "additionalProperties": true
+}

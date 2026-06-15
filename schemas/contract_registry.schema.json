@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/contract_registry.schema.json",
+  "title": "Resource Agent Hypervisor Contract Registry",
+  "type": "object",
+  "required": [
+    "registry",
+    "standards",
+    "imports",
+    "hashing"
+  ],
+  "properties": {
+    "registry": {
+      "type": "object",
+      "required": [
+        "id",
+        "version",
+        "schema_version"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "schema_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "standards": {
+      "type": "object",
+      "required": [
+        "resource_model",
+        "data_contract",
+        "config_validation",
+        "agent_manifest",
+        "evolution_model"
+      ],
+      "properties": {
+        "resource_model": {
+          "enum": [
+            "mcp_resources"
+          ]
+        },
+        "data_contract": {
+          "enum": [
+            "protobuf"
+          ]
+        },
+        "config_validation": {
+          "enum": [
+            "json_schema_2020_12"
+          ]
+        },
+        "agent_manifest": {
+          "enum": [
+            "a2a_agent_card"
+          ]
+        },
+        "evolution_model": {
+          "enum": [
+            "controlled_proposal_pipeline"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "imports": {
+      "type": "object",
+      "required": [
+        "resources",
+        "views",
+        "agents",
+        "proto",
+        "compatibility"
+      ],
+      "properties": {
+        "resources": {
+          "type": "string"
+        },
+        "views": {
+          "type": "string"
+        },
+        "agents": {
+          "type": "string"
+        },
+        "proto": {
+          "type": "string"
+        },
+        "compatibility": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "hashing": {
+      "type": "object",
+      "required": [
+        "algorithm",
+        "include"
+      ],
+      "properties": {
+        "algorithm": {
+          "enum": [
+            "sha256"
+          ]
+        },
+        "include": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

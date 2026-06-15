@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uri3.io/schemas/evolution_proposal.schema.json",
+  "title": "EvolutionProposal",
+  "type": "object",
+  "required": ["apiVersion", "kind", "metadata", "spec"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "apiVersion": { "const": "uri3.io/v1" },
+    "kind": { "const": "EvolutionProposal" },
+    "metadata": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": { "type": "string" },
+        "created_at": { "type": "string" },
+        "created_by": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "uri": {
+      "type": "object",
+      "properties": {
+        "self": { "type": "string", "pattern": "^evolution://" },
+        "source": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "source": {
+      "type": "object",
+      "required": ["uri", "kind"],
+      "properties": {
+        "uri": { "type": "string" },
+        "kind": { "type": "string" },
+        "schema": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "spec": {
+      "type": "object",
+      "required": ["change_type", "reason"],
+      "properties": {
+        "change_type": {
+          "type": "string",
+          "enum": [
+            "new_agent",
+            "modify_agent",
+            "new_resource",
+            "new_projection",
+            "breaking_change",
+            "add_repair_capability",
+            "add_capability"
+          ]
+        },
+        "reason": { "type": "string" },
+        "target": { "type": "object" },
+        "creates": { "type": "array" },
+        "modifies": { "type": "array" }
+      },
+      "additionalProperties": true
+    },
+    "proposal_id": { "type": "string" },
+    "type": { "type": "string" },
+    "reason": { "type": "string" },
+    "adds": { "type": "object" },
+    "checks": {
+      "oneOf": [
+        { "type": "object" },
+        { "type": "array", "items": { "type": "string" } }
+      ]
+    },
+    "approval": { "type": "object" },
+    "safety": { "type": "object" },
+    "verification": { "type": "object" },
+    "source_incident": { "type": "string" },
+    "evolution_uri": { "type": "string" }
+  },
+  "additionalProperties": true
+}

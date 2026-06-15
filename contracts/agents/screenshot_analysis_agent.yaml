@@ -1,0 +1,42 @@
+agent:
+  name: screenshot-analysis-agent
+  python_package: screenshot_analysis_agent
+  version: 0.1.0
+  description: Analyze screenshot artifacts captured by desktop-operator and persist observations.
+  runtime_url_env: RESOURCE_RUNTIME_URL
+  runtime_url_default: http://localhost:8000
+
+capabilities:
+  - name: analyze_screenshot
+    type: command
+    uri: analysis://screenshots/analyze
+    command: AnalyzeScreenshot
+    input_schema: app.screenshots.v1.AnalyzeScreenshotCommand
+    output_schema: app.screenshots.v1.ScreenshotObservation
+    emits:
+      - ScreenshotObservationRecorded
+    renderer: detail
+    description: Analyze an artifact:// or file:// screenshot and append JSONL/Markdown observations.
+
+  - name: capture_and_analyze
+    type: command
+    uri: workflow://screenshots/capture-and-analyze
+    command: CaptureAndAnalyze
+    input_schema: app.screenshots.v1.CaptureAndAnalyzeCommand
+    output_schema: app.screenshots.v1.CaptureAndAnalysisResult
+    emits:
+      - ScreenshotCaptured
+      - ScreenshotObservationRecorded
+    renderer: detail
+    description: Ask desktop-operator to capture a page, then analyze the returned artifact.
+
+  - name: scheduled_capture_analysis
+    type: command
+    uri: cron://screenshots/capture-analysis/every-5-min
+    command: RunScheduledCaptureAnalysis
+    input_schema: app.screenshots.v1.CaptureAndAnalyzeCommand
+    output_schema: app.screenshots.v1.CaptureAndAnalysisResult
+    emits:
+      - ScreenshotCaptureAnalysisTick
+    renderer: detail
+    description: Host schedule hook for running capture_and_analyze every five minutes.

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uri3.io/schemas/cli_shortcuts.schema.json",
+  "title": "CliShortcuts",
+  "type": "object",
+  "required": ["apiVersion", "kind", "shortcuts"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "apiVersion": { "const": "uri3.io/v1" },
+    "kind": { "const": "CliShortcuts" },
+    "shortcuts": { "type": "object" },
+    "examples": { "type": "array", "items": { "type": "string" } }
+  }
+}

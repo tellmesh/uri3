@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uri3.io/schemas/runtime_state.schema.json",
+  "title": "RuntimeStateArtifact",
+  "type": "object",
+  "required": ["apiVersion", "kind", "id", "status"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "apiVersion": { "const": "uri3.io/v1" },
+    "kind": { "const": "RuntimeState" },
+    "uri": {
+      "type": "object",
+      "properties": {
+        "self": { "type": "string", "pattern": "^runtime://" },
+        "agent": { "type": ["string", "null"] },
+        "deployment": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "id": { "type": "string" },
+    "agent_ref": { "type": ["string", "null"] },
+    "status": {
+      "type": "object",
+      "required": ["process_status"],
+      "properties": {
+        "process_status": { "type": "string" },
+        "health_status": { "type": "string" },
+        "lifecycle_status": { "type": "string" },
+        "deployment_status": { "type": "string" },
+        "service_result_status": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "process": {
+      "type": "object",
+      "properties": {
+        "pid": { "type": ["integer", "null"] },
+        "command": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "network": {
+      "type": "object",
+      "properties": {
+        "host": { "type": "string" },
+        "requested_port": { "type": ["integer", "null"] },
+        "effective_port": { "type": ["integer", "null"] },
+        "effective_health_uri": { "type": ["string", "null"] },
+        "declared_health_uri": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "started_at": { "type": ["string", "null"] },
+    "stopped_at": { "type": ["string", "null"] },
+    "command": { "type": ["string", "null"] },
+    "health_uri": { "type": ["string", "null"] },
+    "log_uri": { "type": ["string", "null"] },
+    "env": { "type": "object" },
+    "pid": { "type": ["integer", "null"] }
+  },
+  "additionalProperties": true
+}

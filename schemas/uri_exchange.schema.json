@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uri3.io/schemas/uri_exchange.schema.json",
+  "title": "UriExchangeSession",
+  "description": "Structured NL ↔ URI conversation turn log for TellMesh Flow Chat.",
+  "type": "object",
+  "required": ["session_id", "turns"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "session_id": { "type": "string", "minLength": 1 },
+    "turns": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/turn" }
+    },
+    "nodes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/node" }
+    },
+    "compact_flow": {
+      "type": "string",
+      "description": "uri2flow-compatible YAML snapshot of planned/executed URIs"
+    }
+  },
+  "$defs": {
+    "turn": {
+      "oneOf": [
+        { "$ref": "#/$defs/user_turn" },
+        { "$ref": "#/$defs/planner_turn" },
+        { "$ref": "#/$defs/executor_turn" }
+      ]
+    },
+    "user_turn": {
+      "type": "object",
+      "required": ["role", "nl"],
+      "additionalProperties": false,
+      "properties": {
+        "role": { "const": "user" },
+        "nl": { "type": "string", "minLength": 1 }
+      }
+    },
+    "planner_plan": {
+      "type": "object",
+      "required": ["uris"],
+      "additionalProperties": true,
+      "properties": {
+        "kind": { "type": "string" },
+        "subtype": { "type": "string" },
+        "deployment": { "type": "string" },
+        "nl": { "type": "string" },
+        "uris": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "planner_turn": {
+      "type": "object",
+      "required": ["role"],
+      "additionalProperties": true,
+      "properties": {
+        "role": { "const": "planner" },
+        "batch": { "type": "boolean" },
+        "kind": { "type": "string" },
+        "subtype": { "type": "string" },
+        "deployment": { "type": "string" },
+        "nl": { "type": "string" },
+        "uris": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "plans": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/planner_plan" }
+        }
+      },
+      "oneOf": [
+        {
+          "required": ["uris"],
+          "properties": { "batch": { "not": { "const": true } } }
+        },
+        {
+          "required": ["plans"],
+          "properties": { "batch": { "const": true } }
+        }
+      ]
+    },
+    "workflow_step": {
+      "type": "object",
+      "required": ["uri"],
+      "additionalProperties": true,
+      "properties": {
+        "id": { "type": "string" },
+        "uri": { "type": "string", "minLength": 1 },
+        "payload": { "type": "object" }
+      }
+    },
+    "executor_turn": {
+      "type": "object",
+      "required": ["role", "uri"],
+      "additionalProperties": true,
+      "properties": {
+        "role": { "const": "executor" },
+        "uri": { "type": "string", "minLength": 1 },
+        "ok": { "type": "boolean" },
+        "result_type": { "type": "string" },
+        "summary": { "type": "string" },
+        "workflow_steps": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/workflow_step" }
+        }
+      }
+    },
+    "node": {
+      "type": "object",
+      "required": ["uri", "status"],
+      "additionalProperties": true,
+      "properties": {
+        "uri": { "type": "string", "minLength": 1 },
+        "status": {
+          "type": "string",
+          "enum": ["planned", "executed", "failed"]
+        },
+        "summary": { "type": "string" },
+        "payload": { "type": "object" }
+      }
+    }
+  }
+}

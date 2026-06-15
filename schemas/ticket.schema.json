@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uri3.io/schemas/ticket.schema.json",
+  "title": "Ticket",
+  "type": "object",
+  "required": ["$schema", "apiVersion", "kind", "metadata", "uri", "spec"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "apiVersion": { "const": "uri3.io/v1" },
+    "kind": { "const": "Ticket" },
+    "metadata": {
+      "type": "object",
+      "required": ["id", "created_at"],
+      "properties": {
+        "id": { "type": "string" },
+        "created_at": { "type": "string" },
+        "created_by": { "type": "string" },
+        "source": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "uri": {
+      "type": "object",
+      "required": ["self"],
+      "properties": {
+        "self": { "type": "string", "pattern": "^ticket://" },
+        "source_strategy": { "type": "string" },
+        "proposal": { "type": "string", "pattern": "^evolution://" },
+        "source_incident": { "type": "string", "pattern": "^incident://" }
+      },
+      "additionalProperties": true
+    },
+    "spec": {
+      "type": "object",
+      "required": ["type", "title"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["feature", "bug", "repair", "architecture", "refactor"]
+        },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "priority": { "type": "string" },
+        "sprint": { "type": ["string", "integer"] }
+      },
+      "additionalProperties": true
+    },
+    "scope": {
+      "type": "object",
+      "properties": {
+        "affected_uris": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": true
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "verification": {
+      "type": "object",
+      "properties": {
+        "required": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

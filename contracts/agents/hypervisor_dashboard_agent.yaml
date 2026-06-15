@@ -1,0 +1,55 @@
+agent:
+  name: hypervisor-dashboard
+  python_package: hypervisor_dashboard_agent
+  version: 0.1.0
+  description: System observer/renderer agent — URI process dashboard with approval-gated actions.
+  runtime_url_env: RESOURCE_RUNTIME_URL
+  runtime_url_default: http://localhost:8000
+  type: system_agent
+  role:
+    - observer
+    - renderer
+    - controller
+
+capabilities:
+  - name: process_view
+    type: resource_read
+    uri: resource://dashboard/process/agent/{agent_id}/latest
+    output_schema: dashboard.v1.ProcessView
+    renderer: html
+    description: Render latest process view for a deployed agent.
+
+  - name: workflow_timeline
+    type: resource_read
+    uri: resource://dashboard/workflow/{workflow_id}/timeline
+    output_schema: dashboard.v1.WorkflowTimelineView
+    renderer: html
+    description: Render workflow timeline view.
+
+  - name: incident_explain
+    type: resource_read
+    uri: resource://dashboard/incident/{incident_id}/explain
+    output_schema: dashboard.v1.IncidentExplainView
+    renderer: html
+    description: Explain an incident artifact.
+
+  - name: repair_diagnose
+    type: resource_read
+    uri: resource://dashboard/repair/agent/{agent_id}/diagnosis
+    output_schema: dashboard.v1.RepairDiagnosisView
+    renderer: json
+    description: Diagnose agent health and build repair plan envelope.
+
+  - name: repair_action
+    type: command
+    uri: repair://agent/{agent_id}/apply
+    command: ApplySafeRepair
+    input_schema: dashboard.v1.ApplySafeRepairCommand
+    description: Apply safe repair playbooks (requires approval).
+
+  - name: uri_call
+    type: command
+    uri: hypervisor://dashboard/uri/call
+    command: UriCall
+    input_schema: dashboard.v1.UriCallCommand
+    description: Execute URI through dashboard policy gate.

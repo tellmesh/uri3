@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uri3.io/schemas/agent_readiness.schema.json",
+  "title": "AgentReadinessReport",
+  "type": "object",
+  "required": ["process_status", "health_status", "deployment_status", "recommended_action"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "apiVersion": { "const": "uri3.io/v1" },
+    "kind": { "const": "AgentReadinessReport" },
+    "uri": {
+      "type": "object",
+      "properties": {
+        "self": { "type": "string", "pattern": "^readiness://" }
+      }
+    },
+    "ok": { "type": "boolean" },
+    "process_status": { "type": "string", "enum": ["running", "stopped", "stale", "unknown"] },
+    "health_status": { "type": "string", "enum": ["ok", "failed", "unknown"] },
+    "contract_status": { "type": "string", "enum": ["ok", "failed", "unknown", "skipped"] },
+    "capabilities_status": { "type": "string", "enum": ["ok", "failed", "unknown", "skipped"] },
+    "logs_status": { "type": "string", "enum": ["ok", "errors_found", "unknown"] },
+    "deployment_status": {
+      "type": "string",
+      "enum": ["healthy", "degraded", "unhealthy", "stopped"]
+    },
+    "recommended_action": {
+      "type": "string",
+      "enum": ["none", "observe", "repair", "rebind_port", "restart", "escalate"]
+    },
+    "effective_port": { "type": ["integer", "null"] },
+    "effective_health_uri": { "type": "string" },
+    "incident_codes": { "type": "array", "items": { "type": "string" } }
+  }
+}

@@ -1,0 +1,16 @@
+{"at": "2026-06-15T16:06:35+00:00", "type": "WorkflowStarted", "workflow_id": "check-agent-health", "run_id": "a24798e4eb2c", "mode": "execute"}
+{"at": "2026-06-15T16:06:35+00:00", "type": "StepStarted", "workflow_id": "check-agent-health", "step_id": "open_health", "uri": "browser://chrome/page/open", "operation": "open", "kind": "command", "payload": {"url": "http://localhost:8101/health"}}
+{"at": "2026-06-15T16:06:35+00:00", "type": "StepBlocked", "workflow_id": "check-agent-health", "step_id": "open_health", "reason": "command node 'open_health' requires --approve"}
+{"at": "2026-06-15T16:06:35+00:00", "type": "WorkflowCompleted", "workflow_id": "check-agent-health", "ok": false, "mode": "execute", "workflow_status": "failed", "execution_status": "failed", "service_result_status": "failed"}
+{"at": "2026-06-15T16:06:35+00:00", "type": "WorkflowStarted", "workflow_id": "check-agent-health", "run_id": "6bae222c4856", "mode": "dry_run"}
+{"at": "2026-06-15T16:06:35+00:00", "type": "StepStarted", "workflow_id": "check-agent-health", "step_id": "open_health", "uri": "browser://chrome/page/open", "operation": "open", "kind": "command", "payload": {"url": "http://localhost:8101/health"}}
+{"at": "2026-06-15T16:06:35+00:00", "type": "StepCompleted", "workflow_id": "check-agent-health", "step_id": "open_health", "ok": true}
+{"at": "2026-06-15T16:06:35+00:00", "type": "StepStarted", "workflow_id": "check-agent-health", "step_id": "extract_body", "uri": "dom://chrome/active/body", "operation": "read", "kind": "query", "payload": {}}
+{"at": "2026-06-15T16:06:35+00:00", "type": "StepCompleted", "workflow_id": "check-agent-health", "step_id": "extract_body", "ok": true}
+{"at": "2026-06-15T16:06:35+00:00", "type": "StepStarted", "workflow_id": "check-agent-health", "step_id": "verify_ok", "uri": "assertion://contains", "operation": "check", "kind": "assertion", "payload": {"actual_from": "extract_body.text", "expected": "ok"}}
+{"at": "2026-06-15T16:06:35+00:00", "type": "StepCompleted", "workflow_id": "check-agent-health", "step_id": "verify_ok", "ok": true}
+{"at": "2026-06-15T16:06:35+00:00", "type": "WorkflowCompleted", "workflow_id": "check-agent-health", "ok": true, "mode": "dry_run", "workflow_status": "completed", "execution_status": "completed", "service_result_status": "succeeded"}
+{"at": "2026-06-15T16:06:35+00:00", "type": "WorkflowStarted", "workflow_id": "check-agent-health", "run_id": "ea18b38cf4fc", "mode": "execute"}
+{"at": "2026-06-15T16:06:35+00:00", "type": "StepStarted", "workflow_id": "check-agent-health", "step_id": "open_health", "uri": "browser://chrome/page/open", "operation": "open", "kind": "command", "payload": {"url": "http://localhost:8101/health"}}
+{"at": "2026-06-15T16:06:35+00:00", "type": "StepBlocked", "workflow_id": "check-agent-health", "step_id": "open_health", "reason": "command node 'open_health' requires --approve"}
+{"at": "2026-06-15T16:06:35+00:00", "type": "WorkflowCompleted", "workflow_id": "check-agent-health", "ok": false, "mode": "execute", "workflow_status": "failed", "execution_status": "failed", "service_result_status": "failed"}

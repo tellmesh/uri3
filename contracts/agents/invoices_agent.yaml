@@ -1,0 +1,28 @@
+agent:
+  name: invoices-agent
+  python_package: invoices_agent
+  version: 0.1.0
+  description: Generated thin agent for invoices resources.
+  runtime_url_env: RESOURCE_RUNTIME_URL
+  runtime_url_default: http://localhost:8000
+capabilities:
+- name: read_invoice
+  type: resource_read
+  description: Read resource://invoices/{invoice_id} from the shared Resource Runtime.
+  uri: resource://invoices/{invoice_id}
+  output_schema: app.invoices.v1.InvoiceView
+  renderer: detail
+- name: read_invoice_events
+  type: resource_read
+  description: Read resource://invoices/{invoice_id}/events from the shared Resource
+    Runtime.
+  uri: resource://invoices/{invoice_id}/events
+  output_schema: app.invoices.v1.InvoiceEventsView
+  renderer: timeline
+- name: create_invoice
+  type: command
+  description: Execute CreateInvoice through the shared Resource Runtime.
+  command: CreateInvoice
+  input_schema: app.invoices.v1.CreateInvoiceCommand
+  emits:
+  - CreateInvoiceRequested

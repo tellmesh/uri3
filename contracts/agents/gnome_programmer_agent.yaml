@@ -1,0 +1,35 @@
+agent:
+  name: gnome-programmer-agent
+  python_package: gnome_programmer_agent
+  version: 0.1.0
+  description: Observe and interact with Ubuntu GNOME desktop through desktop-operator.
+  runtime_url_env: RESOURCE_RUNTIME_URL
+  runtime_url_default: http://localhost:8000
+
+capabilities:
+  - name: observe_desktop
+    type: command
+    uri: screen://desktop/observe
+    command: ObserveDesktop
+    input_schema: app.desktop.v1.ObserveDesktopCommand
+    output_schema: app.desktop.v1.DesktopObservation
+    renderer: detail
+    description: Capture GNOME desktop screenshot and window list via desktop-operator.
+
+  - name: type_on_desktop
+    type: command
+    uri: input://desktop/type
+    command: TypeOnDesktop
+    input_schema: app.desktop.v1.TypeOnDesktopCommand
+    output_schema: app.desktop.v1.DesktopInputResult
+    renderer: detail
+    description: Type text into focused GNOME window via ydotool/xdotool through desktop-operator.
+
+  - name: programmer_session
+    type: command
+    uri: workflow://desktop/programmer-session
+    command: RunProgrammerSession
+    input_schema: app.desktop.v1.ProgrammerSessionCommand
+    output_schema: app.desktop.v1.ProgrammerSessionResult
+    renderer: detail
+    description: Observe desktop, optionally type a command snippet, and persist session notes.

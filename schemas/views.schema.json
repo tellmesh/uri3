@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/views.schema.json",
+  "title": "View Contracts",
+  "type": "object",
+  "required": [
+    "views"
+  ],
+  "properties": {
+    "views": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "viewKind",
+          "mimeType",
+          "columns",
+          "rendererHint"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "viewKind": {
+            "enum": [
+              "detail",
+              "table",
+              "timeline",
+              "chart",
+              "json",
+              "html",
+              "map"
+            ]
+          },
+          "mimeType": {
+            "type": "string"
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rendererHint": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}

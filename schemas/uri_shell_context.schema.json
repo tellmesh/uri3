@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uri3.io/schemas/uri_shell_context.schema.json",
+  "title": "UriShellContext",
+  "type": "object",
+  "required": ["apiVersion", "kind", "metadata", "spec"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "apiVersion": { "const": "uri3.io/v1" },
+    "kind": { "const": "UriShellContext" },
+    "metadata": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": { "type": "string" },
+        "description": { "type": "string" }
+      }
+    },
+    "spec": {
+      "type": "object",
+      "properties": {
+        "default_runtime": { "type": "string" },
+        "default_policy": { "type": "string" },
+        "default_output": { "type": "string" },
+        "transports": { "type": "object" }
+      }
+    }
+  }
+}

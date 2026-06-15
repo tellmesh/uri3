@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/uri_tree.schema.json",
+  "title": "URI Tree",
+  "type": "object",
+  "required": [
+    "domain",
+    "resources",
+    "commands",
+    "agent"
+  ],
+  "properties": {
+    "domain": {
+      "type": "object",
+      "required": [
+        "id",
+        "uri",
+        "description"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "inputs": {
+      "type": "object"
+    },
+    "models": {
+      "type": "object"
+    },
+    "commands": {
+      "type": "object"
+    },
+    "events": {
+      "type": "object"
+    },
+    "resources": {
+      "type": "object"
+    },
+    "artifacts": {
+      "type": "object"
+    },
+    "agent": {
+      "type": "object",
+      "required": [
+        "id",
+        "uri"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "card_uri": {
+          "type": "string"
+        },
+        "capabilities": {
+          "type": "array"
+        }
+      }
+    },
+    "deployment": {
+      "type": "object"
+    },
+    "external_protocols": {
+      "type": "object"
+    }
+  }
+}

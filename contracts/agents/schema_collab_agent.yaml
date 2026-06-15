@@ -1,0 +1,36 @@
+agent:
+  name: schema-collab-agent
+  python_package: schema_collab_agent
+  version: 0.1.0
+  description: 'Generated from NL prompt: stworz nowego agenta schema-collab-agent,
+    ktory czyta file:// README, sprawdza device://device/sensor-1/status i robot://robot/amr-1/state
+    oraz ma komende cron monitor'
+  runtime_url_env: RESOURCE_RUNTIME_URL
+  runtime_url_default: http://localhost:8000
+capabilities:
+- name: read_markpact_source
+  type: resource_read
+  uri: file://agents/generated/schema_collab_agent/README.md
+  output_schema: app.codex.v1.MarkpactSourceView
+  renderer: text
+  description: Read generated agent README/provenance through file://.
+- name: read_device_status
+  type: resource_read
+  uri: device://device/sensor-1/status
+  output_schema: operator.device.v1.DeviceStatus
+  renderer: detail
+  description: Read device status through uri2ops.
+- name: read_robot_state
+  type: resource_read
+  uri: robot://robot/amr-1/state
+  output_schema: operator.robot.v1.RobotState
+  renderer: detail
+  description: Read robot state through uri2ops.
+- name: run_cron_monitor
+  type: command
+  uri: cron://www/monitor/landing
+  command: RunCronMonitor
+  input_schema: app.codex.v1.RunCronMonitorCommand
+  emits:
+  - CronMonitorRequested
+  description: Dispatch a scheduled monitor through cron:// URI.

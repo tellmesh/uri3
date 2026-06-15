@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/agent_contract.schema.json",
+  "title": "Agent Contract",
+  "type": "object",
+  "required": [
+    "agent",
+    "capabilities"
+  ],
+  "properties": {
+    "agent": {
+      "type": "object",
+      "required": [
+        "name",
+        "version"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]+$"
+        },
+        "version": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "type"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "resource_read",
+              "command",
+              "query",
+              "task"
+            ]
+          },
+          "uri": {
+            "type": "string"
+          },
+          "output_schema": {
+            "type": "string"
+          },
+          "input_schema": {
+            "type": "string"
+          },
+          "renderer": {
+            "type": "string"
+          },
+          "command": {
+            "type": "string"
+          },
+          "emits": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": true
+      },
+      "minItems": 1
+    }
+  },
+  "additionalProperties": false
+}

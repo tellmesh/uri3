@@ -1,0 +1,38 @@
+agent:
+  name: user-agent
+  python_package: user_agent
+  version: 0.1.0
+  description: Thin generated agent for reading users and dispatching user commands.
+  runtime_url_env: RESOURCE_RUNTIME_URL
+  runtime_url_default: http://localhost:8000
+
+capabilities:
+  - name: read_user
+    type: resource_read
+    uri: resource://users/{user_id}
+    output_schema: app.users.v1.UserView
+    renderer: detail
+    description: Read a single user view by user_id.
+
+  - name: read_user_roles
+    type: resource_read
+    uri: resource://users/{user_id}/roles
+    output_schema: app.users.v1.UserRolesView
+    renderer: table
+    description: Read roles assigned to a user.
+
+  - name: create_user
+    type: command
+    command: CreateUser
+    input_schema: app.users.v1.CreateUserCommand
+    emits:
+      - UserCreated
+    description: Create a user by emitting UserCreated.
+
+  - name: assign_user_role
+    type: command
+    command: AssignUserRole
+    input_schema: app.users.v1.AssignUserRoleCommand
+    emits:
+      - UserRoleAssigned
+    description: Assign a role to a user.
