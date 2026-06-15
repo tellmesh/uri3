@@ -1,5 +1,5 @@
 {
-  "count": 20,
+  "count": 21,
   "schemes": {
     "android": [
       "dump_ui",
@@ -14,7 +14,8 @@
       "click",
       "extract_dom",
       "open",
-      "screenshot"
+      "screenshot",
+      "wait"
     ],
     "device": [
       "read",
