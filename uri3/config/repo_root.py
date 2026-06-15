@@ -28,7 +28,11 @@ def _split_checkout_root(start: Path) -> Path | None:
     if current.is_file():
         current = current.parent
     for base in (current, *current.parents):
-        for candidate in (base / "hypervisor", base / "wronai" / "hypervisor"):
+        for candidate in (
+            base / "tellmesh" / "tellmesh",
+            base / "hypervisor",
+            base / "wronai" / "hypervisor",
+        ):
             if (candidate / "contracts").is_dir() and (candidate / "schemas").is_dir():
                 return candidate.resolve()
     return None
@@ -44,10 +48,11 @@ def _env_root() -> Path | None:
 
 def find_repo_root(start: Path | None = None, *, strict: bool = True) -> Path:
     """Locate monorepo root by contract/schema or config markers."""
+    env_root = _env_root()
+    if env_root is not None:
+        return env_root
+
     if start is None:
-        env_root = _env_root()
-        if env_root is not None:
-            return env_root
         split_root = _split_checkout_root(Path.cwd())
         if split_root is not None:
             return split_root

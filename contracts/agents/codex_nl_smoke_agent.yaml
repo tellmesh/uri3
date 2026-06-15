@@ -10,7 +10,7 @@ agent:
 capabilities:
 - name: read_markpact_source
   type: resource_read
-  uri: file:///home/tom/github/wronai/hypervisor/agents/generated/codex_nl_smoke_agent/README.md
+  uri: file:///home/tom/github/tellmesh/tellmesh/agents/generated/codex_nl_smoke_agent/README.md
   output_schema: app.codex.v1.MarkpactSourceView
   renderer: text
   description: Read generated agent README/provenance through file://.
