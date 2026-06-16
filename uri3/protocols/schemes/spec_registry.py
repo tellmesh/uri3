@@ -35,6 +35,7 @@ def build_scheme_registry() -> dict[str, SchemeSpec]:
         resource_like.resource_like_spec("screen", "Screen or viewport capture target."),
         resource_like.resource_like_spec("assertion", "Verification/assertion step in a workflow graph."),
         resource_like.resource_like_spec("hypervisor", "Hypervisor deployment or lifecycle operation."),
+        resource_like.resource_like_spec("message", "Human alert/notification (escalation, not LLM)."),
     ]
     return {spec.scheme: spec for spec in specs}
 

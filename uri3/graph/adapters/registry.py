@@ -6,6 +6,9 @@ from urllib.parse import urlparse
 
 from uri3.graph.adapters.base import StepAdapter
 from uri3.graph.adapters.browser_router import BrowserRouterAdapter
+from uri3.graph.adapters.llm_adapter import LlmAdapter
+from uri3.graph.adapters.log_adapter import LogAdapter
+from uri3.graph.adapters.message_adapter import MessageAdapter
 from uri3.graph.adapters.runtime_adapter import RuntimeAdapter
 from uri3.graph.adapters.uri2ops_adapter import Uri2OpsAdapter, _use_legacy_browser_adapter
 from uri3.graph.execution_models import ExecutionContext
@@ -108,6 +111,9 @@ def _operator_adapter() -> StepAdapter:
 ADAPTERS: list[StepAdapter] = [
     RuntimeAdapter(),
     _operator_adapter(),
+    LogAdapter(),
+    LlmAdapter(),
+    MessageAdapter(),
     AssertionAdapter(),
     HypervisorAdapter(),
 ]

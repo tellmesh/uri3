@@ -33,5 +33,6 @@ SUPPORTED_SCHEMES = {
     "contract",
     "incident",
     "chat",
+    "message",
     "nl",
 }

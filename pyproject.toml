@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "uri3"
-version = "0.5.8"
+version = "0.5.9"
 description = "URI discovery, validation, routing and graph utilities"
 requires-python = ">=3.10"
 license = "Apache-2.0"

@@ -1,0 +1,45 @@
+flow:
+  id: nl-log-decision
+  description: NL decyzja na podstawie logów (log → llm decide → conditional action)
+
+defaults:
+  approved: true
+  dry_run: false
+
+do:
+  - id: read_logs
+    uri: log://hypervisor?level=ERROR&grep=502&since=5m&limit=50
+    operation: read
+    kind: query
+    payload:
+      summary: true
+
+  - id: nl_decide
+    uri: llm://local/text/query/decide
+    operation: decide
+    kind: query
+    after: read_logs
+    payload:
+      question: "Czy te logi wskazują na problem z forwardem do urirdp?"
+      context_from: read_logs
+      expect: boolean
+
+  - id: retry_forward
+    uri: assertion://equals
+    operation: equals
+    kind: assertion
+    after: nl_decide
+    if: nl_decide.decision == "retry"
+    payload:
+      actual: retry
+      expected: retry
+
+  - id: escalate
+    uri: message://local/alert/command/send
+    operation: send
+    kind: command
+    after: nl_decide
+    if: nl_decide.decision == "abort"
+    payload:
+      text: "W logach wykryto krytyczny błąd — wymaga interwencji"
+      severity: critical

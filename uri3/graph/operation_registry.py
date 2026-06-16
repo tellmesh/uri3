@@ -14,6 +14,8 @@ OPERATIONS_BY_SCHEME: dict[str, frozenset[str]] = {
     "http": frozenset({"read", "query", "get"}),
     "https": frozenset({"read", "query", "get"}),
     "log": frozenset({"read", "query"}),
+    "llm": frozenset({"read", "query", "decide", "analyze", "plan"}),
+    "message": frozenset({"send", "query", "read"}),
     "agent": frozenset({"read", "status", "generate"}),
     "domain": frozenset({"generate", "read"}),
 }
@@ -27,6 +29,8 @@ DEFAULT_KIND_BY_SCHEME: dict[str, str] = {
     "http": "query",
     "https": "query",
     "log": "query",
+    "llm": "query",
+    "message": "command",
     "agent": "command",
     "domain": "command",
 }
