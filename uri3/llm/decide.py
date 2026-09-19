@@ -4,10 +4,10 @@ import json
 import re
 from typing import Any
 
-from uri3.graph.payload_context import extract_log_entries
-
-
 def _mock_decide(question: str, context_value: Any, *, expect: str) -> dict[str, Any]:
+    # Graph adapters import decide; defer this dependency until initialization ends.
+    from uri3.graph.payload_context import extract_log_entries
+
     entries = extract_log_entries(context_value)
     blob = json.dumps(context_value or entries, ensure_ascii=False, default=str).lower()
     has_error = any(str(item.get("level", "")).upper() == "ERROR" for item in entries)
